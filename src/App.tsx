@@ -1,5 +1,7 @@
 import React from 'react'
 import { Router, Route, ReactLocation } from 'react-location'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 import { useColorScheme } from '@mantine/hooks'
 import { MantineProvider } from '@mantine/core'
 
@@ -22,18 +24,23 @@ const routes: Route[] = [
 ]
 
 const location = new ReactLocation()
+const queryClient = new QueryClient()
 
 export const App = () => {
   const preferredColorScheme = useColorScheme()
 
   return (
-    <Router routes={routes} location={location}>
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{ colorScheme: preferredColorScheme }}>
-        <AppShell />
-      </MantineProvider>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router routes={routes} location={location}>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={{ colorScheme: preferredColorScheme }}>
+          <AppShell />
+        </MantineProvider>
+      </Router>
+
+      <ReactQueryDevtools initialIsOpen />
+    </QueryClientProvider>
   )
 }

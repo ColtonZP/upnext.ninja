@@ -43,7 +43,7 @@ export const TextInput: React.FC<Props> = ({
             </Tooltip>
           )
         }
-        mb={listInput ? 'md' : 0}
+        mb={listInput ? 'xs' : 0}
         px="xs"
         size={listInput ? 'lg' : 'sm'}
       />
