@@ -1,4 +1,5 @@
-import React from 'react'
+import { DragEvent, useMemo } from 'react'
+import { Link } from 'react-location'
 import {
   Button,
   createStyles,
@@ -7,27 +8,70 @@ import {
   Text,
   Menu,
   Stack,
+  ActionIcon,
+  Group,
+  useMantineTheme,
 } from '@mantine/core'
-import { ArrowRight, PlaylistAdd } from 'tabler-icons-react'
-import { Link } from 'react-location'
-import { Game } from '../lib/types'
+import { ArrowRight, Circle, CircleCheck, CircleMinus, CirclePlus, PlaylistAdd } from 'tabler-icons-react'
 
-const lists = ['wishlist', 'playlist']
+import { Game, MinifiedGame, Playlist } from '../lib/types'
+import { useStore } from '../lib/store'
 
 type Props = {
-  game: Game
+  game: Game | MinifiedGame
+  playlist?: Playlist
 }
 
-export const GameCard = ({ game }: Props) => {
+export const GameCard = ({ game, playlist }: Props) => {
+  const ding = new Audio('/ding.mp3')
+  const theme = useMantineTheme()
   const { classes } = useStyles()
+  const { playlists, addGame, removeGame, updateDragId, toggleCompletedGame } = useStore()
 
-  const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
+  const isInPlaylist: Record<string, boolean> = useMemo(
+    () =>
+      playlists.reduce(
+        (lists, list) => ({
+          ...lists,
+          [list.id]: !!list.games.find(findGame => findGame.id === game.id),
+        }),
+        {},
+      ),
+    [playlists],
+  )
+
+  const handleDragStart = (e: DragEvent<HTMLDivElement>) => {
     e.dataTransfer.setData('game', JSON.stringify(game))
+    updateDragId(game.id)
+  }
+
+  const handleDragEnd = () => {
+    updateDragId(-1)
+  }
+
+  const handleListSelect = (id: string) => {
+    if (isInPlaylist[id]) removeGame(id, game)
+    else addGame(id, game)
+  }
+
+  const formatDate = (date: string) => {
+    const newDate = new Date(date)
+    return newDate.toLocaleString('default', {
+      month: 'long',
+      day: '2-digit',
+      year: 'numeric',
+    })
+  }
+
+  const handleCompleteGame = (gameId: number, completed: boolean) => {
+    if (!completed) ding.play()
+    if (playlist) toggleCompletedGame(playlist.id, gameId, !completed)
   }
 
   return (
     <Paper
-      onDragStart={handleDrag}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
       id={game.slug}
       className={classes.card}
       draggable
@@ -35,20 +79,23 @@ export const GameCard = ({ game }: Props) => {
       radius="md"
       sx={{ backgroundImage: `url(${game.background_image})` }}>
       <div className={classes.info}>
-        <Text className={classes.category} size="xs" m={0}>
-          {game.released}
-        </Text>
+        <Group position="apart">
+          <Text className={classes.category} size="xs" m={0}>
+            {formatDate(game.released)}
+          </Text>
+          {'completed' in game && (
+            <ActionIcon onClick={() => handleCompleteGame(game.id, game.completed)} className={classes.check}>
+              {game.completed ? <CircleCheck size={24} color={theme.colors.green[5]} /> : <Circle size={24} />}
+            </ActionIcon>
+          )}
+        </Group>
+
         <Title order={3} className={classes.title}>
           {game.name}
         </Title>
       </div>
 
-      <Stack
-        align="flex-start"
-        justify="flex-start"
-        spacing="xs"
-        px="xs"
-        pb="xs">
+      <Stack align="flex-start" justify="flex-start" spacing="xs" px="xs" pb="xs">
         <Menu
           control={
             <Button className={classes.listSelect} size="sm" px={5}>
@@ -57,22 +104,28 @@ export const GameCard = ({ game }: Props) => {
           }
           transition="pop-top-left"
           placement="start">
-          {lists.map(list => (
-            <Menu.Item>{list}</Menu.Item>
+          {playlists.map(list => (
+            <Menu.Item
+              key={`${list.id}-options`}
+              onClick={() => handleListSelect(list.id)}
+              icon={
+                isInPlaylist[list.id] ? <CircleMinus size={16} color="red" /> : <CirclePlus size={16} color="green" />
+              }>
+              {list.title}
+            </Menu.Item>
           ))}
         </Menu>
 
-        <Button
-          variant="white"
-          color="dark"
-          rightIcon={<ArrowRight />}
-          component={Link}
-          to={`game/${game.slug}`}>
+        <Button variant="white" color="dark" rightIcon={<ArrowRight />} component={Link} to={`/game/${game.slug}`}>
           Learn More
         </Button>
       </Stack>
     </Paper>
   )
+}
+
+GameCard.defaultProps = {
+  playlist: null,
 }
 
 const useStyles = createStyles(theme => ({
@@ -89,10 +142,7 @@ const useStyles = createStyles(theme => ({
 
   info: {
     width: '100%',
-    backgroundColor:
-      theme.colorScheme === 'dark'
-        ? 'rgba(0, 0, 0, 0.4)'
-        : 'rgba(255, 255, 255, 0.4)',
+    backgroundColor: theme.colorScheme === 'dark' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)',
     backdropFilter: 'blur(8px)',
     padding: theme.spacing.xs,
   },
@@ -101,7 +151,7 @@ const useStyles = createStyles(theme => ({
     fontWeight: 900,
     color: theme.colorScheme === 'dark' ? theme.white : theme.black,
     lineHeight: 1.2,
-    fontSize: 36,
+    fontSize: 28,
   },
 
   category: {
@@ -110,19 +160,18 @@ const useStyles = createStyles(theme => ({
     fontWeight: 700,
   },
 
-  menu: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.white : theme.black,
-  },
-
   listSelect: {
     backgroundColor: theme.colorScheme === 'dark' ? theme.white : theme.black,
     color: theme.colorScheme === 'dark' ? theme.black : theme.white,
 
     '&:hover': {
-      backgroundColor:
-        theme.colorScheme === 'dark'
-          ? theme.colors.gray[4]
-          : theme.colors.dark[4],
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.gray[4] : theme.colors.dark[4],
+    },
+  },
+
+  check: {
+    '&:hover': {
+      background: 'none',
     },
   },
 }))

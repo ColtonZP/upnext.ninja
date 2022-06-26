@@ -1,22 +1,18 @@
-import React, { Dispatch, ReactNode, SetStateAction } from 'react'
-import {
-  CloseButton,
-  Tooltip,
-  TextInput as MantineTextInput,
-} from '@mantine/core'
+import { ChangeEvent, Dispatch, FormEvent, ReactNode, SetStateAction } from 'react'
+import { CloseButton, Tooltip, TextInput as MantineTextInput } from '@mantine/core'
 
 type Props = {
   placeholder: string
   inputValue: string
   updateInputValue: Dispatch<SetStateAction<string>>
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void
   closeButton?: boolean
   listInput?: boolean
   toggleClose?: () => void
   icon?: ReactNode
 }
 
-export const TextInput: React.FC<Props> = ({
+export const TextInput = ({
   placeholder,
   inputValue,
   updateInputValue,
@@ -25,16 +21,14 @@ export const TextInput: React.FC<Props> = ({
   listInput,
   toggleClose,
   icon,
-}) => {
+}: Props) => {
   return (
     <form onSubmit={handleSubmit}>
       <MantineTextInput
         required
         placeholder={placeholder}
         value={inputValue}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          updateInputValue(e.target.value)
-        }
+        onChange={(e: ChangeEvent<HTMLInputElement>) => updateInputValue(e.target.value)}
         icon={icon && icon}
         rightSection={
           closeButton && (

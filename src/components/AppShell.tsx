@@ -1,12 +1,19 @@
-import React from 'react'
+import { useState } from 'react'
 import { Outlet } from 'react-location'
 import { AppShell as MantineAppShell } from '@mantine/core'
 
 import { Header, Navbar } from '.'
 
-export const AppShell: React.FC = () => {
+export const AppShell = () => {
+  const [openedNavbar, toggleOpenedNavbar] = useState(false)
+
   return (
-    <MantineAppShell fixed padding="md" header={<Header />} navbar={<Navbar />}>
+    <MantineAppShell
+      fixed
+      navbarOffsetBreakpoint="sm"
+      padding="md"
+      header={<Header openedNavbar={openedNavbar} toggleOpenedNavbar={toggleOpenedNavbar} />}
+      navbar={<Navbar openedNavbar={openedNavbar} toggleOpenedNavbar={toggleOpenedNavbar} />}>
       <Outlet />
     </MantineAppShell>
   )

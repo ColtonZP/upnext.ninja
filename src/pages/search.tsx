@@ -1,21 +1,19 @@
 import { useState } from 'react'
+import { useSearch } from 'react-location'
 import { useQuery } from 'react-query'
 import { Title } from '@mantine/core'
 
-import { getGames } from '../lib/api'
+import { searchGamePage } from '../lib/api'
 import { GamesRes } from '../lib/types'
 import { DataError, GameListLayout } from '../components'
 
-export * from './playlist'
-export * from './game'
-export * from './search'
-
-export const Index = () => {
+export const Search = () => {
+  const search = useSearch()
   const [page, setPage] = useState(1)
 
-  const { data, isError, isFetching } = useQuery<GamesRes>(['games', page], () => getGames(page), {
-    keepPreviousData: true,
-  })
+  const { data, isError, isFetching } = useQuery<GamesRes>([`game-search`, search.game, page], () =>
+    searchGamePage(search.game as string, { page }),
+  )
 
   if (isError) return <DataError />
 
@@ -23,7 +21,7 @@ export const Index = () => {
     <GameListLayout
       title={
         <Title order={2} pb="xl">
-          Games
+          {`Search results for "${search.game}"`}
         </Title>
       }
       games={data?.results ?? []}

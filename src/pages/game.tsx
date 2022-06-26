@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useMatch } from 'react-location'
-import { Title } from '@mantine/core'
 import { useQuery } from 'react-query'
+import { Loader, Title } from '@mantine/core'
 
 import { GamesRes } from '../lib/types'
 import { searchGamePage } from '../lib/api'
+import { DataError } from '../components'
 
 export const Game = () => {
   const { params } = useMatch()
@@ -14,14 +15,11 @@ export const Game = () => {
   )
 
   const foundGame = useMemo(
-    () =>
-      gamesSearch.isSuccess
-        ? gamesSearch.data.results.find(game => game.slug === params.game)
-        : null,
+    () => (gamesSearch.isSuccess ? gamesSearch.data.results.find(game => game.slug === params.game) : null),
     [gamesSearch],
   )
 
-  if (gamesSearch.isLoading) return <>Loading...</>
+  if (gamesSearch.isLoading) return <Loader />
 
   if (foundGame)
     return (
@@ -30,5 +28,5 @@ export const Game = () => {
       </div>
     )
 
-  return <>Failed to load</>
+  return <DataError />
 }

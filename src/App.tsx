@@ -5,8 +5,8 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { useColorScheme } from '@mantine/hooks'
 import { MantineProvider } from '@mantine/core'
 
-import { Game, Index, List } from './pages'
-import { AppShell } from './components/AppShell'
+import { Game, Index, Playlist, Search } from './pages'
+import { AppShell } from './components'
 
 const routes: Route[] = [
   {
@@ -14,17 +14,29 @@ const routes: Route[] = [
     element: <Index />,
   },
   {
+    path: 'search/',
+    element: <Search />,
+  },
+  {
     path: 'game/:game',
     element: <Game />,
   },
   {
     path: 'list/:list',
-    element: <List />,
+    element: <Playlist />,
   },
 ]
 
 const location = new ReactLocation()
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 300000,
+      cacheTime: 900000,
+      refetchOnMount: false,
+    },
+  },
+})
 
 export const App = () => {
   const preferredColorScheme = useColorScheme()
@@ -32,10 +44,7 @@ export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Router routes={routes} location={location}>
-        <MantineProvider
-          withGlobalStyles
-          withNormalizeCSS
-          theme={{ colorScheme: preferredColorScheme }}>
+        <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme: preferredColorScheme }}>
           <AppShell />
         </MantineProvider>
       </Router>

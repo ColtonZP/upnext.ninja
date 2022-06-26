@@ -1,15 +1,25 @@
-import React from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { Link } from 'react-location'
-import { Title, Header as MantineHeader, createStyles } from '@mantine/core'
+import { Title, Header as MantineHeader, createStyles, Group, Burger } from '@mantine/core'
 
-export const Header = () => {
+type Props = {
+  openedNavbar: boolean
+  toggleOpenedNavbar: Dispatch<SetStateAction<boolean>>
+}
+
+export const Header = ({ openedNavbar, toggleOpenedNavbar }: Props) => {
   const { classes } = useStyles()
 
   return (
-    <MantineHeader height={64.2} px="lg" py="xs" fixed>
-      <Title className={classes.plainLink}>
-        <Link to="/">Games Up Next 🥷</Link>
-      </Title>
+    <MantineHeader height={64.2} px="lg" py="xs">
+      <Group>
+        <Burger opened={openedNavbar} onClick={() => toggleOpenedNavbar(!openedNavbar)} size="sm" />
+        <Title className={classes.plainLink}>
+          <Link onClick={() => toggleOpenedNavbar(false)} to="/">
+            Games Up Next 🥷
+          </Link>
+        </Title>
+      </Group>
     </MantineHeader>
   )
 }

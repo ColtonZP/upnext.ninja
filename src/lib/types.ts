@@ -99,3 +99,14 @@ export type Game = {
   esrb_rating: { name: string; id: number; slug: string }
   short_screenshots: { image: string; id: number }[]
 }
+
+export type MinifiedGame = {
+  id: number
+  name: string
+  background_image: string
+  slug: string
+  released: string
+  completed: boolean
+}
+
+export type Playlist = { title: string; id: string; games: MinifiedGame[] }
