@@ -21,6 +21,7 @@ module.exports = {
     },
   },
   rules: {
+    'import/no-extraneous-dependencies': 'off',
     'react/no-array-index-key': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',

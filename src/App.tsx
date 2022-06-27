@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Route, ReactLocation } from 'react-location'
+import { Router, Route, ReactLocation, createHashHistory, createBrowserHistory } from 'react-location'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { useColorScheme } from '@mantine/hooks'
@@ -7,6 +7,7 @@ import { MantineProvider } from '@mantine/core'
 
 import { Game, Index, Playlist, Search } from './pages'
 import { AppShell } from './components'
+import { isElectron } from './lib/helpers'
 
 const routes: Route[] = [
   {
@@ -27,7 +28,8 @@ const routes: Route[] = [
   },
 ]
 
-const location = new ReactLocation()
+export const history = isElectron() ? createHashHistory() : createBrowserHistory()
+const location = new ReactLocation({ history })
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

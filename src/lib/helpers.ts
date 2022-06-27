@@ -13,3 +13,8 @@ export const generateId = () => Math.random().toString(16).slice(2, 7)
 
 export const sortGame = (games: MinifiedGame[], by: 'name' | 'released') =>
   games.sort((a, b) => a[by].localeCompare(b[by]))
+
+export const isElectron = () => {
+  const userAgent = navigator.userAgent.toLowerCase()
+  return userAgent.indexOf(' electron/') !== -1
+}
