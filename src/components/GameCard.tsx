@@ -14,6 +14,7 @@ import {
 } from '@mantine/core'
 import { ArrowRight, Circle, CircleCheck, CircleMinus, CirclePlus, PlaylistAdd } from 'tabler-icons-react'
 
+import dingSound from '../assets/ding.mp3'
 import { Game, MinifiedGame, Playlist } from '../lib/types'
 import { useStore } from '../lib/store'
 
@@ -23,7 +24,7 @@ type Props = {
 }
 
 export const GameCard = ({ game, playlist }: Props) => {
-  const ding = new Audio('/ding.mp3')
+  const ding = new Audio(dingSound)
   const theme = useMantineTheme()
   const { classes } = useStyles()
   const { playlists, addGame, removeGame, updateDragId, toggleCompletedGame } = useStore()
