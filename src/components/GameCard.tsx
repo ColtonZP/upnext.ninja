@@ -78,9 +78,7 @@ export const GameCard = ({ game, playlist }: Props) => {
       draggable
       shadow="md"
       radius="md"
-      sx={{
-        backgroundImage: `url(${game.background_image})`,
-      }}>
+      sx={{ backgroundImage: `url(${game.background_image})` }}>
       <div className={classes.info}>
         <Group position="apart">
           <Text className={classes.category} size="xs" m={0}>
