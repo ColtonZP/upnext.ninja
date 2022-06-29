@@ -28,6 +28,8 @@ const routes: Route[] = [
   },
 ]
 
+console.log(isElectron())
+
 export const history = isElectron() ? createHashHistory() : createBrowserHistory()
 const location = new ReactLocation({ history })
 const queryClient = new QueryClient({

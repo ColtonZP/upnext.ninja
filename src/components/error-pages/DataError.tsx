@@ -10,7 +10,7 @@ export function DataError() {
   return (
     <Container className={classes.root}>
       <div className={classes.label}>500</div>
-      <Title className={classes.title}>Playlist not found</Title>
+      <Title className={classes.title}>Something went wrong</Title>
       <Text color="dimmed" align="center" className={classes.description}>
         There was trouble getting what you&#39;re looking for, refresh the page or try again later.
       </Text>
