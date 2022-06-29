@@ -3,6 +3,8 @@ import { useMatch } from 'react-location'
 import { Button, Group, Menu, Title, useMantineTheme } from '@mantine/core'
 import {
   Dots,
+  Eye,
+  EyeOff,
   Filter,
   Pencil,
   SortAscendingLetters,
@@ -15,6 +17,7 @@ import {
 import { useStore } from '../lib/store'
 import { sortGame } from '../lib/helpers'
 import { DeleteModal, RenameModal, PageNotFound, GameListLayout } from '../components'
+import { MinifiedGame } from '../lib/types'
 
 type GameFilter = 'ASCEND_ALPHABETICAL' | 'DESCEND_ALPHABETICAL' | 'ASCEND_DATE' | 'DESCEND_DATE'
 
@@ -24,12 +27,13 @@ export const Playlist = () => {
   const { playlists } = useStore()
 
   const [filter, updateFilter] = useState<GameFilter>('ASCEND_ALPHABETICAL')
+  const [showHidden, toggleShowHidden] = useState(false)
   const [deleteModal, toggleDeleteModal] = useState(false)
   const [renameModal, toggleRenameModal] = useState(false)
 
   const playlist = useMemo(() => playlists.find(list => list.id === params.list) ?? null, [playlists, params])
 
-  const filteredGames = useMemo(() => {
+  const sortedGames = useMemo(() => {
     const games = playlist?.games || []
 
     switch (filter) {
@@ -45,6 +49,10 @@ export const Playlist = () => {
         throw new Error()
     }
   }, [playlist?.games, filter])
+  const filterGames = useMemo(
+    () => sortedGames.filter(game => (showHidden ? !game.completed : game)),
+    [sortedGames, showHidden],
+  )
 
   const handleRemoveModal = () => toggleDeleteModal(true)
   const handleRenameModal = () => toggleRenameModal(true)
@@ -100,10 +108,15 @@ export const Playlist = () => {
               <Menu.Item onClick={() => updateFilter('DESCEND_DATE')} icon={<SortDescendingNumbers size={16} />}>
                 Descend Date
               </Menu.Item>
+              <Menu.Item
+                onClick={() => toggleShowHidden(prevState => !prevState)}
+                icon={showHidden ? <Eye size={16} /> : <EyeOff size={16} />}>
+                {`${showHidden ? 'Show' : 'Hide'} Completed`}
+              </Menu.Item>
             </Menu>
           </Group>
         }
-        games={filteredGames}
+        games={filterGames}
         playlist={playlist}
       />
     </>

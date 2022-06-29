@@ -78,7 +78,9 @@ export const GameCard = ({ game, playlist }: Props) => {
       draggable
       shadow="md"
       radius="md"
-      sx={{ backgroundImage: `url(${game.background_image})` }}>
+      sx={{
+        backgroundImage: `url(${game.background_image})`,
+      }}>
       <div className={classes.info}>
         <Group position="apart">
           <Text className={classes.category} size="xs" m={0}>
@@ -86,7 +88,7 @@ export const GameCard = ({ game, playlist }: Props) => {
           </Text>
           {'completed' in game && (
             <ActionIcon onClick={() => handleCompleteGame(game.id, game.completed)} className={classes.check}>
-              {game.completed ? <CircleCheck size={24} color={theme.colors.green[5]} /> : <Circle size={24} />}
+              {game.completed ? <CircleCheck size={24} color={theme.colors.green[4]} /> : <Circle size={24} />}
             </ActionIcon>
           )}
         </Group>
