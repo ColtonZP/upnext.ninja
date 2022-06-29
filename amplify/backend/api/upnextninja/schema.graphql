@@ -1,0 +1,19 @@
+type Game {
+  id: Int!
+  name: String!
+  background_image: String!
+  slug: String!
+  released: String!
+  completed: Boolean!
+}
+
+type Playlist {
+  id: ID!
+  title: String!
+  games: [Game!]
+}
+
+type UserPlaylist @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  playlists: [Playlist!]
+}
