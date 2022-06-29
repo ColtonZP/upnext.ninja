@@ -86,7 +86,7 @@ export const GameCard = ({ game, playlist }: Props) => {
           </Text>
           {'completed' in game && (
             <ActionIcon onClick={() => handleCompleteGame(game.id, game.completed)} className={classes.check}>
-              {game.completed ? <CircleCheck size={24} color={theme.colors.green[5]} /> : <Circle size={24} />}
+              {game.completed ? <CircleCheck size={24} color={theme.colors.green[4]} /> : <Circle size={24} />}
             </ActionIcon>
           )}
         </Group>

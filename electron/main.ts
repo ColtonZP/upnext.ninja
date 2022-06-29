@@ -1,6 +1,7 @@
 const { app, BrowserWindow, screen: electronScreen } = require('electron')
 const isDev = require('electron-is-dev')
 const path = require('path')
+require('electron').Menu.setApplicationMenu(null)
 
 const createMainWindow = () => {
   let mainWindow = new BrowserWindow({

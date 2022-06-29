@@ -15,4 +15,4 @@ export const getGames = async (page: number): Promise<GamesRes> => getFetch('gam
 export const searchGamePage = async (
   search: string,
   options?: Record<string, string | number | boolean>,
-): Promise<GamesRes> => getFetch('games', { page_size: 36, search, ...options })
+): Promise<GamesRes> => getFetch('games', { page_size: 36, search, search_exact: true, ...options })

@@ -10,9 +10,7 @@ import { DataError } from '../components'
 export const Game = () => {
   const { params } = useMatch()
 
-  const gamesSearch = useQuery<GamesRes>(`${params.game}-search`, () =>
-    searchGamePage(params.game, { search_exact: true }),
-  )
+  const gamesSearch = useQuery<GamesRes>(`${params.game}-search`, () => searchGamePage(params.game))
 
   const foundGame = useMemo(
     () => (gamesSearch.isSuccess ? gamesSearch.data.results.find(game => game.slug === params.game) : null),
