@@ -1,6 +1,7 @@
 import create from 'zustand'
 import { devtools } from 'zustand/middleware'
-import { Auth } from 'aws-amplify'
+import { Auth, DataStore } from 'aws-amplify'
+import { UserPlaylist } from '../models'
 
 export type UnconfirmedUser = { userConfirmed: boolean }
 export type ConfirmedUser = { attributes: { email_verified: boolean } }
@@ -61,11 +62,17 @@ export const userStore = create<UserStore>()(
 
     confirmAccount: (username, code) => {
       Auth.confirmSignUp(username, code)
-        .then(() => {
+        .then(async () => {
           set(state => ({
             user: { ...state.user, userConfirmed: true },
             authenticationError: { name: '', code: '' },
           }))
+
+          await DataStore.save(
+            new UserPlaylist({
+              playlists: [],
+            }),
+          )
         })
         .catch(err => {
           set({ authenticationError: err })

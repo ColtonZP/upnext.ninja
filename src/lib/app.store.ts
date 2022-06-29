@@ -1,12 +1,17 @@
 import create from 'zustand'
 import { devtools } from 'zustand/middleware'
 
+import { DataStore } from 'aws-amplify'
 import { Game, MinifiedGame, Playlist } from './types'
 import { generateId, minifyGame } from './helpers'
+import { UserPlaylist } from '../models'
 
 export type AppStore = {
   playlists: Playlist[]
+  userPlaylist: any
   gameDragId: number
+
+  getDB: () => void
 
   addList: (title: string) => void
   removeList: (id: string) => void
@@ -21,7 +26,13 @@ export type AppStore = {
 export const appStore = create<AppStore>()(
   devtools(set => ({
     playlists: [],
+    userPlaylist: [],
     gameDragId: -1,
+
+    getDB: async () => {
+      const models = await DataStore.query(UserPlaylist)
+      set({ userPlaylist: models[0] })
+    },
 
     addList: title =>
       set(state => ({

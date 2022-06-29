@@ -13,7 +13,8 @@ type Playlist {
   games: [Game!]
 }
 
-type UserPlaylist @model @auth(rules: [{allow: public}]) {
+type UserPlaylist @model @auth(rules: [{allow: owner}, {allow: public}]) {
   id: ID!
   playlists: [Playlist!]
 }
+ 
