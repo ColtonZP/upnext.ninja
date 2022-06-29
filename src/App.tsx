@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Router, Route, ReactLocation, createHashHistory, createBrowserHistory } from 'react-location'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
@@ -8,6 +8,8 @@ import { MantineProvider } from '@mantine/core'
 import { Game, Index, Playlist, Search } from './pages'
 import { AppShell } from './components'
 import { isElectron } from './lib/helpers'
+import { Authentication } from './pages/Authentication'
+import { UnconfirmedUser, userStore } from './lib/user.store'
 
 const routes: Route[] = [
   {
@@ -28,8 +30,6 @@ const routes: Route[] = [
   },
 ]
 
-console.log(isElectron())
-
 export const history = isElectron() ? createHashHistory() : createBrowserHistory()
 const location = new ReactLocation({ history })
 const queryClient = new QueryClient({
@@ -44,15 +44,23 @@ const queryClient = new QueryClient({
 
 export const App = () => {
   const preferredColorScheme = useColorScheme()
+  const { user, getUser } = userStore()
+
+  useEffect(() => {
+    getUser()
+  }, [])
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Router routes={routes} location={location}>
-        <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme: preferredColorScheme }}>
-          <AppShell />
-        </MantineProvider>
-      </Router>
-
+      <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme: preferredColorScheme }}>
+        {!user || ('userConfirmed' in user && !(user as UnconfirmedUser).userConfirmed) ? (
+          <Authentication />
+        ) : (
+          <Router routes={routes} location={location}>
+            <AppShell />
+          </Router>
+        )}
+      </MantineProvider>
       <ReactQueryDevtools initialIsOpen />
     </QueryClientProvider>
   )

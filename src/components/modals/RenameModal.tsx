@@ -2,7 +2,7 @@ import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
 import { Button, Group, Modal, Text, TextInput, Title } from '@mantine/core'
 
 import { Playlist } from '../../lib/types'
-import { useStore } from '../../lib/store'
+import { appStore } from '../../lib/app.store'
 
 type Props = {
   open: boolean
@@ -11,7 +11,7 @@ type Props = {
 }
 
 export const RenameModal = ({ open, toggleOpen, playlist }: Props) => {
-  const { renameList } = useStore()
+  const { renameList } = appStore()
 
   const [newName, updateNewName] = useState('')
 

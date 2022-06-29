@@ -4,7 +4,7 @@ import { Plus, Search } from 'tabler-icons-react'
 import { ActionIcon, Group, Navbar as MantineNavbar, ScrollArea, Title, Tooltip } from '@mantine/core'
 
 import { TextInput } from '../index'
-import { useStore } from '../../lib/store'
+import { appStore } from '../../lib/app.store'
 import { PlaylistLink } from './PlaylistLink'
 import { linkStyles } from './styles'
 
@@ -18,7 +18,7 @@ export const Navbar = ({ openedNavbar, toggleOpenedNavbar }: Props) => {
   const navigate = useNavigate()
   const { classes, cx } = linkStyles()
 
-  const { playlists, addList } = useStore()
+  const { playlists, addList } = appStore()
 
   const [search, updateSearch] = useState('')
   const [newListForm, toggleNewListForm] = useState(false)

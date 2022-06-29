@@ -3,7 +3,7 @@ import { useNavigate } from 'react-location'
 import { Button, Group, Modal, Text, Title } from '@mantine/core'
 
 import { Playlist } from '../../lib/types'
-import { useStore } from '../../lib/store'
+import { appStore } from '../../lib/app.store'
 
 type Props = {
   open: boolean
@@ -12,7 +12,7 @@ type Props = {
 }
 
 export const DeleteModal = ({ open, toggleOpen, playlist }: Props) => {
-  const { removeList } = useStore()
+  const { removeList } = appStore()
   const navigate = useNavigate()
 
   const handleClose = () => toggleOpen(false)

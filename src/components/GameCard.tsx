@@ -16,7 +16,7 @@ import { ArrowRight, Circle, CircleCheck, CircleMinus, CirclePlus, PlaylistAdd }
 
 import dingSound from '../assets/ding.mp3'
 import { Game, MinifiedGame, Playlist } from '../lib/types'
-import { useStore } from '../lib/store'
+import { appStore } from '../lib/app.store'
 
 type Props = {
   game: Game | MinifiedGame
@@ -27,7 +27,7 @@ export const GameCard = ({ game, playlist }: Props) => {
   const ding = new Audio(dingSound)
   const theme = useMantineTheme()
   const { classes } = useStyles()
-  const { playlists, addGame, removeGame, updateDragId, toggleCompletedGame } = useStore()
+  const { playlists, addGame, removeGame, updateDragId, toggleCompletedGame } = appStore()
 
   const isInPlaylist: Record<string, boolean> = useMemo(
     () =>

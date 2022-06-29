@@ -14,7 +14,7 @@ import {
   Trash,
 } from 'tabler-icons-react'
 
-import { useStore } from '../lib/store'
+import { appStore } from '../lib/app.store'
 import { sortGame } from '../lib/helpers'
 import { DeleteModal, RenameModal, PageNotFound, GameListLayout } from '../components'
 
@@ -23,7 +23,7 @@ type GameFilter = 'ASCEND_ALPHABETICAL' | 'DESCEND_ALPHABETICAL' | 'ASCEND_DATE'
 export const Playlist = () => {
   const theme = useMantineTheme()
   const { params } = useMatch()
-  const { playlists } = useStore()
+  const { playlists } = appStore()
 
   const [filter, updateFilter] = useState<GameFilter>('ASCEND_ALPHABETICAL')
   const [showHidden, toggleShowHidden] = useState(false)

@@ -2,7 +2,7 @@ import { Dispatch, DragEvent, SetStateAction, useState } from 'react'
 import { Link, useRouter } from 'react-location'
 import { Button } from '@mantine/core'
 import { Playlist } from '../../lib/types'
-import { useStore } from '../../lib/store'
+import { appStore } from '../../lib/app.store'
 import { linkStyles } from './styles'
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 export const PlaylistLink = ({ playlist, toggleOpenedNavbar }: Props) => {
   const router = useRouter()
   const { classes, cx } = linkStyles()
-  const { gameDragId, addGame } = useStore()
+  const { gameDragId, addGame } = appStore()
 
   const [validDragOver, updateValidDragOver] = useState('')
   const [invalidDragOver, updateInvalidDragOver] = useState('')

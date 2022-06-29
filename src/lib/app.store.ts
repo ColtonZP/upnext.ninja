@@ -4,25 +4,23 @@ import { devtools } from 'zustand/middleware'
 import { Game, MinifiedGame, Playlist } from './types'
 import { generateId, minifyGame } from './helpers'
 
-export type Store = {
+export type AppStore = {
   playlists: Playlist[]
   gameDragId: number
+
   addList: (title: string) => void
   removeList: (id: string) => void
   renameList: (id: string, newName: string) => void
   addGame: (id: string, newGame: Game | MinifiedGame) => void
   removeGame: (id: string, newGame: Game | MinifiedGame) => void
-  updateDragId: (id: number) => void
   toggleCompletedGame: (listId: string, gamesId: number, completed: boolean) => void
+
+  updateDragId: (id: number) => void
 }
 
-export const useStore = create<Store>()(
+export const appStore = create<AppStore>()(
   devtools(set => ({
-    playlists: [
-      { title: 'Playlist', id: 'aaaa1', games: [] },
-      { title: 'Wishlist', id: 'bbbb2', games: [] },
-    ],
-
+    playlists: [],
     gameDragId: -1,
 
     addList: title =>
