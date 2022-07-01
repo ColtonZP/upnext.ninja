@@ -1,0 +1,15 @@
+type Playlist @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  title: String!
+  games: [Game!]
+}
+
+type Game {
+  id: Int!
+  name: String!
+  background_image: String!
+  slug: String!
+  released: String!
+  completed: Boolean!
+}
+ 

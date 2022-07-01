@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "upnextninja",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/colton/Documents/Projects/Web/upnext.ninja/games.upnext.ninja/amplify/backend/api/upnextninja/schema.graphql",
+    "defaultAuthType": {
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authupnextninja"
+    },
+    "additionalAuthTypes": [
+      {
+        "mode": "AWS_IAM"
+      }
+    ],
+    "conflictResolution": {
+      "defaultResolutionStrategy": {
+        "type": "OPTIMISTIC_CONCURRENCY"
+      },
+      "perModelResolutionStrategy": [
+        {
+          "resolutionStrategy": {
+            "type": "OPTIMISTIC_CONCURRENCY"
+          },
+          "entityName": "Playlist"
+        }
+      ]
+    }
+  }
+}
