@@ -11,7 +11,6 @@ const createMainWindow = () => {
     backgroundColor: 'white',
     webPreferences: {
       nodeIntegration: false,
-      devTools: true,
     },
   })
 

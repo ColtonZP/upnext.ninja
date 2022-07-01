@@ -8,11 +8,43 @@
     "files": [
       "build/**/*",
       "electron/main.ts",
-      "package.json"
+      "package.json",
+      "./public/*"
     ],
+    "directories": {
+      "buildResources": "public"
+    },
     "extends": null,
+    "dmg": {
+      "sign": false
+    },
     "mac": {
-      "type": "distribution"
+      "icon": "./public/logo512.png",
+      "category": "games",
+      "target": {
+        "target": "dmg",
+        "arch": [
+          "arm64",
+          "x64"
+        ]
+      }
+    },
+    "win": {
+      "icon": "./public/logo512.png",
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "msi",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
     }
   },
   "private": true,
@@ -40,7 +72,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "electron:start": "concurrently -k \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron:build": "npm run build && electron-builder build --publish never"
+    "electron:build": "npm run build && electron-builder build --publish never --mac --win"
   },
   "eslintConfig": {
     "extends": [
