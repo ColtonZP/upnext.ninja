@@ -162,8 +162,8 @@ const useStyles = createStyles(theme => ({
   },
 
   listSelect: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.white : theme.black,
-    color: theme.colorScheme === 'dark' ? theme.black : theme.white,
+    backgroundColor: theme.white,
+    color: theme.black,
 
     '&:hover': {
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.gray[4] : theme.colors.dark[4],
