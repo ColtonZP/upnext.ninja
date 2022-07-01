@@ -11,8 +11,12 @@ export const Search = () => {
   const search = useSearch()
   const [page, setPage] = useState(1)
 
-  const { data, isError, isFetching } = useQuery<GamesRes>([`game-search`, search.game, page], () =>
-    searchGamePage(search.game as string, { page }),
+  const { data, isError, isFetching } = useQuery<GamesRes>(
+    [`game-search`, search.game, page],
+    () => searchGamePage(search.game as string, { page }),
+    {
+      onSuccess: () => window.scrollTo(0, 0),
+    },
   )
 
   if (isError) return <DataError />

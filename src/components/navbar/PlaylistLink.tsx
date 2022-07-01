@@ -41,7 +41,10 @@ export const PlaylistLink = ({ playlist, toggleOpenedNavbar }: Props) => {
 
   return (
     <Button
-      onClick={() => toggleOpenedNavbar(false)}
+      onClick={() => {
+        window.scrollTo(0, 0)
+        toggleOpenedNavbar(false)
+      }}
       variant="subtle"
       size="lg"
       key={playlist.id}
@@ -52,7 +55,7 @@ export const PlaylistLink = ({ playlist, toggleOpenedNavbar }: Props) => {
       component={Link}
       to={`/list/${playlist.id}`}
       className={cx(classes.link, {
-        [classes.linkActive]: router.state.location.href === `/list/${playlist}`,
+        [classes.linkActive]: router.state.location.href === `/list/${playlist.id}`,
         [classes.validDragOver]: validDragOver === playlist.id,
         [classes.invalidDragOver]: invalidDragOver === playlist.id,
       })}>
