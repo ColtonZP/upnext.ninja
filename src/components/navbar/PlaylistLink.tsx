@@ -41,7 +41,10 @@ export const PlaylistLink = ({ playlist, toggleOpenedNavbar }: Props) => {
 
   return (
     <Button
-      onClick={() => toggleOpenedNavbar(false)}
+      onClick={() => {
+        window.scrollTo(0, 0)
+        toggleOpenedNavbar(false)
+      }}
       variant="subtle"
       size="lg"
       key={playlist.id}

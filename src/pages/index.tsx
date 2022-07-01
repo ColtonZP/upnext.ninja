@@ -15,6 +15,7 @@ export const Index = () => {
 
   const { data, isError, isFetching } = useQuery<GamesRes>(['games', page], () => getGames(page), {
     keepPreviousData: true,
+    onSuccess: () => window.scrollTo(0, 0),
   })
 
   if (isError) return <DataError />

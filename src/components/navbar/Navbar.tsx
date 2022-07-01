@@ -53,7 +53,10 @@ export const Navbar = ({ openedNavbar, toggleOpenedNavbar }: Props) => {
 
       <Title order={3} my="md">
         <Link
-          onClick={() => toggleOpenedNavbar(false)}
+          onClick={() => {
+            window.scrollTo(0, 0)
+            toggleOpenedNavbar(false)
+          }}
           to="/"
           className={cx(classes.link, {
             [classes.linkActive]: router.state.location.href === '/',
