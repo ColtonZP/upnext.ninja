@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react'
 import { useNavigate } from 'react-location'
 import { Button, Group, Modal, Text, Title } from '@mantine/core'
 
-import { Playlist } from '../../lib/types'
+import { Playlist } from '../../models'
 import { appStore } from '../../lib/app.store'
 
 type Props = {

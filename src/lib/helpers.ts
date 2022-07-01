@@ -1,6 +1,7 @@
-import { Game, MinifiedGame } from './types'
+import { Game as FullGame } from './types'
+import { Game } from '../models'
 
-export const minifyGame = (game: Game): MinifiedGame => ({
+export const minifyGame = (game: FullGame): Game => ({
   id: game.id,
   name: game.name,
   background_image: game.background_image,
@@ -9,10 +10,8 @@ export const minifyGame = (game: Game): MinifiedGame => ({
   completed: false,
 })
 
-export const generateId = () => Math.random().toString(16).slice(2, 7)
-
-export const sortGame = (games: MinifiedGame[], by: 'name' | 'released') =>
-  games.sort((a, b) => a[by].localeCompare(b[by]))
+export const sortGame = (games: Game[], by: 'name' | 'released') =>
+  [...games].sort((a, b) => a[by].localeCompare(b[by]))
 
 export const isElectron = () => {
   const userAgent = navigator.userAgent.toLowerCase()

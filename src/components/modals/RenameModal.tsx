@@ -1,7 +1,7 @@
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
 import { Button, Group, Modal, Text, TextInput, Title } from '@mantine/core'
 
-import { Playlist } from '../../lib/types'
+import { Playlist } from '../../models'
 import { appStore } from '../../lib/app.store'
 
 type Props = {

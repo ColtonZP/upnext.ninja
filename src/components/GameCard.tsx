@@ -15,11 +15,12 @@ import {
 import { ArrowRight, Circle, CircleCheck, CircleMinus, CirclePlus, PlaylistAdd } from 'tabler-icons-react'
 
 import dingSound from '../assets/ding.mp3'
-import { Game, MinifiedGame, Playlist } from '../lib/types'
+import { Game as FullGame } from '../lib/types'
 import { appStore } from '../lib/app.store'
+import { Game, Playlist } from '../models'
 
 type Props = {
-  game: Game | MinifiedGame
+  game: FullGame | Game
   playlist?: Playlist
 }
 
@@ -31,13 +32,15 @@ export const GameCard = ({ game, playlist }: Props) => {
 
   const isInPlaylist: Record<string, boolean> = useMemo(
     () =>
-      playlists.reduce(
-        (lists, list) => ({
-          ...lists,
-          [list.id]: !!list.games.find(findGame => findGame.id === game.id),
-        }),
-        {},
-      ),
+      playlists.length
+        ? playlists.reduce(
+            (lists, list) => ({
+              ...lists,
+              [list.id]: !!list.games!.find(gameSearch => gameSearch.id === game.id),
+            }),
+            {},
+          )
+        : {},
     [playlists],
   )
 
@@ -99,22 +102,23 @@ export const GameCard = ({ game, playlist }: Props) => {
       <Stack align="flex-start" justify="flex-start" spacing="xs" px="xs" pb="xs">
         <Menu
           control={
-            <Button className={classes.listSelect} size="sm" px={5}>
+            <Button disabled={!playlists.length} className={classes.listSelect} size="sm" px={5}>
               <PlaylistAdd size={24} width={24} />
             </Button>
           }
           transition="pop-top-left"
           placement="start">
-          {playlists.map(list => (
-            <Menu.Item
-              key={`${list.id}-options`}
-              onClick={() => handleListSelect(list.id)}
-              icon={
-                isInPlaylist[list.id] ? <CircleMinus size={16} color="red" /> : <CirclePlus size={16} color="green" />
-              }>
-              {list.title}
-            </Menu.Item>
-          ))}
+          {!!playlists.length &&
+            playlists.map(list => (
+              <Menu.Item
+                key={`${list.id}-options`}
+                onClick={() => handleListSelect(list.id)}
+                icon={
+                  isInPlaylist[list.id] ? <CircleMinus size={16} color="red" /> : <CirclePlus size={16} color="green" />
+                }>
+                {list.title}
+              </Menu.Item>
+            ))}
         </Menu>
 
         <Button variant="white" color="dark" rightIcon={<ArrowRight />} component={Link} to={`/game/${game.slug}`}>
@@ -162,8 +166,8 @@ const useStyles = createStyles(theme => ({
   },
 
   listSelect: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.white : theme.black,
-    color: theme.colorScheme === 'dark' ? theme.black : theme.white,
+    backgroundColor: theme.white,
+    color: theme.black,
 
     '&:hover': {
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.gray[4] : theme.colors.dark[4],

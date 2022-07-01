@@ -21,6 +21,7 @@ module.exports = {
     },
   },
   rules: {
+    'no-param-reassign': 'off',
     'import/no-extraneous-dependencies': 'off',
     'react/no-array-index-key': 'off',
     'no-use-before-define': 'off',

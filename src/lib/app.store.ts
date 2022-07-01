@@ -1,90 +1,103 @@
 import create from 'zustand'
+import { DataStore } from 'aws-amplify'
 import { devtools } from 'zustand/middleware'
 
-import { DataStore } from 'aws-amplify'
-import { Game, MinifiedGame, Playlist } from './types'
-import { generateId, minifyGame } from './helpers'
-import { UserPlaylist } from '../models'
+import { Game as FullGame } from './types'
+import { minifyGame } from './helpers'
+import { Game, Playlist } from '../models'
 
 export type AppStore = {
   playlists: Playlist[]
-  userPlaylist: any
   gameDragId: number
 
-  getDB: () => void
+  getUserPlaylist: () => void
+
+  updateDragId: (id: number) => void
 
   addList: (title: string) => void
   removeList: (id: string) => void
   renameList: (id: string, newName: string) => void
-  addGame: (id: string, newGame: Game | MinifiedGame) => void
-  removeGame: (id: string, newGame: Game | MinifiedGame) => void
+  addGame: (id: string, newGame: FullGame | Game) => void
+  removeGame: (id: string, newGame: FullGame | Game) => void
   toggleCompletedGame: (listId: string, gamesId: number, completed: boolean) => void
-
-  updateDragId: (id: number) => void
 }
 
 export const appStore = create<AppStore>()(
   devtools(set => ({
     playlists: [],
-    userPlaylist: [],
+    userPlaylists: { id: '' },
     gameDragId: -1,
-
-    getDB: async () => {
-      const models = await DataStore.query(UserPlaylist)
-      set({ userPlaylist: models[0] })
-    },
-
-    addList: title =>
-      set(state => ({
-        playlists: [...state.playlists, { title, id: generateId(), games: [] }],
-      })),
-
-    removeList: id =>
-      set(state => ({
-        playlists: state.playlists.filter(list => list.id !== id),
-      })),
-
-    renameList: (id, newName) =>
-      set(state => ({
-        playlists: state.playlists.map(list => (list.id === id ? { ...list, title: newName } : list)),
-      })),
-
-    addGame: (id, newGame) =>
-      set(state => ({
-        playlists: state.playlists.map(list =>
-          list.id === id
-            ? {
-                ...list,
-                games: [...list.games, 'completed' in newGame ? newGame : minifyGame(newGame as Game)],
-              }
-            : list,
-        ),
-      })),
-
-    removeGame: (id, newGame) =>
-      set(state => ({
-        playlists: state.playlists.map(list =>
-          list.id === id
-            ? {
-                ...list,
-                games: list.games.filter(game => game.id !== newGame.id),
-              }
-            : list,
-        ),
-      })),
 
     updateDragId: id => set({ gameDragId: id }),
 
-    toggleCompletedGame: (listId, gameId, completed) =>
-      set(state => ({
-        playlists: state.playlists.map(list =>
-          list.id === listId
-            ? {
-                ...list,
-                games: list.games.map(game => (game.id === gameId ? { ...game, completed } : game)),
-              }
-            : list,
-        ),
-      })),
+    getUserPlaylist: async () => {
+      const userPlaylists = await DataStore.query(Playlist)
+      set({ playlists: userPlaylists })
+    },
+
+    addList: async title => {
+      await DataStore.save(
+        new Playlist({
+          title,
+          games: [],
+        }),
+      )
+    },
+
+    removeList: async id => {
+      const playlist = await DataStore.query(Playlist, id)
+
+      if (playlist) {
+        await DataStore.delete(playlist)
+      }
+    },
+
+    renameList: async (id, newName) => {
+      const playlist = await DataStore.query(Playlist, id)
+
+      if (playlist) {
+        await DataStore.save(
+          Playlist.copyOf(playlist, mutator => {
+            mutator.title = newName
+          }),
+        )
+      }
+    },
+
+    addGame: async (id, newGame) => {
+      const playlist = await DataStore.query(Playlist, id)
+
+      if (playlist) {
+        await DataStore.save(
+          Playlist.copyOf(playlist, mutator => {
+            mutator.games = [...playlist.games!, 'completed' in newGame ? newGame : minifyGame(newGame)]
+          }),
+        )
+      }
+    },
+
+    removeGame: async (id, newGame) => {
+      const playlist = await DataStore.query(Playlist, id)
+
+      if (playlist) {
+        await DataStore.save(
+          Playlist.copyOf(playlist, mutator => {
+            mutator.games = playlist.games!.filter(game => game.id !== newGame.id)
+          }),
+        )
+      }
+    },
+
+    toggleCompletedGame: async (id, gameId, completed) => {
+      const playlist = await DataStore.query(Playlist, id)
+
+      if (playlist) {
+        await DataStore.save(
+          Playlist.copyOf(playlist, mutator => {
+            mutator.games = playlist.games!.map(game => (game.id === gameId ? { ...game, completed } : game))
+          }),
+        )
+      }
+    },
   })),
 )

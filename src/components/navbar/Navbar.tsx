@@ -34,7 +34,7 @@ export const Navbar = ({ openedNavbar, toggleOpenedNavbar }: Props) => {
     if (search.length) navigate({ to: '/search', search: { game: search }, replace: true })
   }
 
-  const handleSubmitList = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmitList = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     addList(newList)
     updateNewList('')
@@ -85,9 +85,10 @@ export const Navbar = ({ openedNavbar, toggleOpenedNavbar }: Props) => {
         />
       )}
       <MantineNavbar.Section grow component={ScrollArea} mx="-xs" px="xs">
-        {playlists.map(playlist => (
-          <PlaylistLink key={`${playlist.id}-link`} playlist={playlist} toggleOpenedNavbar={toggleOpenedNavbar} />
-        ))}
+        {!!playlists.length &&
+          playlists?.map(playlist => (
+            <PlaylistLink key={`${playlist.id}-link`} playlist={playlist} toggleOpenedNavbar={toggleOpenedNavbar} />
+          ))}
       </MantineNavbar.Section>
     </MantineNavbar>
   )

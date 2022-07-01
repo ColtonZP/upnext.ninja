@@ -1,9 +1,9 @@
 import { Dispatch, DragEvent, SetStateAction, useState } from 'react'
 import { Link, useRouter } from 'react-location'
 import { Button } from '@mantine/core'
-import { Playlist } from '../../lib/types'
 import { appStore } from '../../lib/app.store'
 import { linkStyles } from './styles'
+import { Playlist } from '../../models'
 
 type Props = {
   playlist: Playlist
@@ -20,7 +20,7 @@ export const PlaylistLink = ({ playlist, toggleOpenedNavbar }: Props) => {
 
   const handleDragOver = (e: DragEvent<HTMLAnchorElement>) => {
     e.preventDefault()
-    if (playlist.games.find(game => game.id === gameDragId)) {
+    if (playlist.games && playlist.games.find(game => game.id === gameDragId)) {
       e.dataTransfer.dropEffect = 'none'
       updateInvalidDragOver((e.target as HTMLDivElement).id)
     } else updateValidDragOver((e.target as HTMLDivElement).id)

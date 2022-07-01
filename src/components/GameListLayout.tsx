@@ -3,11 +3,12 @@ import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Grid, Group, Pagination, Skeleton } from '@mantine/core'
 import { GameCard } from './GameCard'
 import { GridCol } from './GridCol'
-import { Game, MinifiedGame, Playlist } from '../lib/types'
+import { Game as FullGame } from '../lib/types'
+import { Game, Playlist } from '../models'
 
 type Props = {
   title: ReactNode
-  games: Game[] | MinifiedGame[]
+  games: FullGame[] | Game[]
   playlist?: Playlist
   isFetching?: boolean
   gamesCount?: number
