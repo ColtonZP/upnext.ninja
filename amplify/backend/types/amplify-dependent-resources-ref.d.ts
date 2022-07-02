@@ -15,5 +15,11 @@ export type AmplifyDependentResourcesAttributes = {
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         }
+    },
+    "storage": {
+        "s3upnextninjastorage": {
+            "BucketName": "string",
+            "Region": "string"
+        }
     }
 }

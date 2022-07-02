@@ -59,5 +59,12 @@
         }
       }
     }
+  },
+  "storage": {
+    "s3upnextninjastorage": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }

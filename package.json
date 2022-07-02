@@ -19,6 +19,7 @@
       "sign": false
     },
     "mac": {
+      "type": "distribution",
       "icon": "./public/logo512.png",
       "category": "games",
       "target": {
@@ -53,12 +54,12 @@
     "@aws-amplify/datastore": "^3.12.1",
     "@mantine/core": "^4.2.10",
     "@mantine/hooks": "^4.2.10",
-    "@types/jest": "^27.5.2",
     "@types/node": "^16.11.41",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "aws-amplify": "^4.3.26",
     "electron-is": "^3.0.0",
+    "file-saver": "^2.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-location": "^3.3.4",
@@ -72,7 +73,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "electron:start": "concurrently -k \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron:build": "npm run build && electron-builder build --publish never --mac --win"
+    "electron:build": "npm run build && electron-builder build --publish never"
   },
   "eslintConfig": {
     "extends": [
@@ -93,6 +94,7 @@
     ]
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.5",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
