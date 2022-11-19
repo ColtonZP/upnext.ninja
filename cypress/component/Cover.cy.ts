@@ -3,3 +3,5 @@ describe('Cover.cy.ts', () => {
     // cy.mount()
   })
 })
+
+export {}
