@@ -6,7 +6,7 @@ import styles from './styles.module.css'
 export function Nav() {
   const pathName = usePathname()
 
-  const isDiscover = pathName === '/' || pathName.includes('games')
+  const isDiscover = pathName === '/' || pathName?.includes('games')
 
   return (
     <nav className={styles.nav}>
@@ -19,7 +19,7 @@ export function Nav() {
         { innerText: 'Account', href: '/auth' },
       ].map(link => (
         <Link
-          className={[styles.navLink, pathName.includes(link.href) ? styles.navLinkActive : ''].join(' ')}
+          className={[styles.navLink, pathName?.includes(link.href) ? styles.navLinkActive : ''].join(' ')}
           href={link.href}>
           {link.innerText}
         </Link>
