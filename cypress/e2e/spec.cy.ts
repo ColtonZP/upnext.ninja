@@ -12,3 +12,5 @@ describe('empty spec', () => {
     cy.get('header > h1 a').click()
   })
 })
+
+export {}
