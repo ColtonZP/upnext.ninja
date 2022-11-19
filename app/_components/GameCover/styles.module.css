@@ -1,0 +1,28 @@
+.game {
+  border-radius: var(--rounded);
+  height: 350px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.header {
+  display: inline-block;
+  width: 100%;
+  background: rgba(255, 255, 255, .5);
+  backdrop-filter: blur(15px);
+  border-radius: var(--rounded) var(--rounded) 0 0;
+  padding: .5rem;
+  color: black;
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    color: white;
+    background: rgba(0, 0, 0, .5);
+  }
+}
+
+.title {
+  margin: 0;
+}

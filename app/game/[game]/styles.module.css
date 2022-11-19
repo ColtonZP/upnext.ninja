@@ -1,0 +1,30 @@
+.banner {
+  width: 100%;
+  height: 360px;
+  position: relative;
+  border-radius: var(--rounded);
+  overflow: hidden;
+  margin: 0;
+}
+
+.banner img {
+  object-fit: cover;
+  object-position: top;
+}
+
+.section {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  top: -100px;
+  padding: 0 2rem;
+}
+
+.section img {
+  border-radius: var(--rounded);
+  margin-right: 1rem;
+}
+
+.details {
+  padding-top: 100px;
+}

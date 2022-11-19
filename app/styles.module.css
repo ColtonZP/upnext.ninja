@@ -1,0 +1,77 @@
+.header {
+  height: var(--header-size);
+  border-bottom: 1px solid gray;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background: rgba(255, 255, 255, .8);
+  backdrop-filter: blur(10px);
+  padding: 0 var(--horizontal-margin);
+  z-index: 100;
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    background: rgba(0, 0, 0, .8);
+  }
+}
+
+.h1 {
+  font-size: 1.953rem;
+  margin: 0;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.h2 {
+  margin-top: 0;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.form input {
+  padding: .6rem 1rem;
+  border-radius: var(--rounded) 0 0 var(--rounded);
+  border: none;
+  width: 100%;
+}
+
+.form button {
+  padding: .6rem;
+  border-radius: 0 var(--rounded) var(--rounded) 0;
+  border: none;
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  /*height: calc(100vh - var(--header-size));*/
+  border: 1px solid gray;
+  position: fixed;
+  top: calc(2rem + var(--header-size));
+  width: var(--nav-size);
+  margin: 0 var(--horizontal-margin);
+  border-radius: var(--rounded);
+  overflow: hidden;
+}
+
+.navLink {
+  background: rgba(100, 100, 100, .2);
+  width: 100%;
+  display: block;
+  padding: .8em;
+  line-height: normal;
+}
+
+.navLinkActive {
+  font-weight: bold;
+  background: steelblue;
+}
